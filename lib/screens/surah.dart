@@ -1,5 +1,6 @@
 import 'package:alquranbd/readable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Surah extends StatefulWidget {
   // final surah;
@@ -14,6 +15,11 @@ class _SurahState extends State<Surah> {
   @override
   Widget build(BuildContext context) {
     var surah = Readable.QuranData[widget.surahNumber - 1];
+    // SystemChrome.setApplicationSwitcherDescription(
+    //     ApplicationSwitcherDescription(
+    //   label: 'QuranBD | Surah | $widget.surahNumber',
+    //   primaryColor: Theme.of(context).primaryColor.value,
+    // ));
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(200),
@@ -58,10 +64,7 @@ class _SurahState extends State<Surah> {
       body: ListView.builder(
         itemBuilder: (context, index) {
           return ListTile(
-            leading: Title(
-              color: Colors.green,
-              child: SelectableText((index + 1).toString()),
-            ),
+            leading: SelectableText((index + 1).toString()),
             title: Text(
               surah['verses'][index]['text'],
               textAlign: TextAlign.end,

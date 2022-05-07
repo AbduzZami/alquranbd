@@ -1,6 +1,6 @@
 import 'package:alquranbd/readable.dart';
-import 'package:alquranbd/screens/surah.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -12,6 +12,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    // SystemChrome.setApplicationSwitcherDescription(
+    //     ApplicationSwitcherDescription(
+    //   label: 'QuranBD | Home',
+    //   primaryColor: Theme.of(context).primaryColor.value,
+    // ));
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -25,10 +30,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView.builder(
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Title(
-                color: Colors.green,
-                child: Text((index + 1).toString()),
-              ),
+              leading: Text((index + 1).toString()),
               title: Text(Readable.QuranData[index]['name']),
               subtitle: Text(Readable.QuranData[index]['transliteration'] +
                   ' (' +
