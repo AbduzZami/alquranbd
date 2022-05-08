@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../readable.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Ayat extends StatefulWidget {
   final int surahNumber, ayatNumber;
@@ -170,6 +171,23 @@ class _AyatState extends State<Ayat> {
                   ),
                 ),
               ),
+              Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('কপিরাইট ©'),
+                      TextButton(
+                          onPressed: () {
+                            launchUrl(
+                                Uri.parse('https://facebook.com/abduzzami'));
+                          },
+                          child:
+                              Text('আব্দুজ জামি', textAlign: TextAlign.center))
+                    ],
+                  )),
             ]),
       ),
     );

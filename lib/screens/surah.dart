@@ -1,6 +1,6 @@
 import 'package:alquranbd/readable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Surah extends StatefulWidget {
@@ -177,6 +177,23 @@ class _SurahState extends State<Surah> {
                 },
                 itemCount: surah['verses'].length,
               ),
+              Padding(
+                  padding: const EdgeInsets.all(30.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('কপিরাইট ©'),
+                      TextButton(
+                          onPressed: () {
+                            launchUrl(
+                                Uri.parse('https://facebook.com/abduzzami'));
+                          },
+                          child:
+                              Text('আব্দুজ জামি', textAlign: TextAlign.center))
+                    ],
+                  )),
             ],
           ),
         ));
