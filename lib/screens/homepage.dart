@@ -46,16 +46,16 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    // child: TextFormField(
-                    //   decoration: InputDecoration(
-                    //     contentPadding: const EdgeInsets.all(20.0),
-                    //     border: OutlineInputBorder(
-                    //       borderRadius: BorderRadius.circular(10.0),
-                    //     ),
-                    //     hintText: "Search Quran",
-                    //   ),
-                    // ),
-                    child: AutocompleteBasicExample(),
+                    child: Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              width: 3,
+                              color: Theme.of(context).primaryColor,
+                            )),
+                        child: AutocompleteBasicUserExample()),
                   ),
                   SizedBox(
                     height: 15,
@@ -215,27 +215,81 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class AutocompleteBasicExample extends StatelessWidget {
-  const AutocompleteBasicExample({Key? key}) : super(key: key);
+@immutable
+class SearchObject {
+  SearchObject({
+    required this.title,
+    required this.id,
+    this.isayatsurah,
+    this.isayatsurahid,
+  });
 
-  static final List<String> _kOptions = Readable.QuranData.map((surah) {
-    debugPrint(surah['transliteration']);
-    return surah['transliteration'];
-  }).toList();
+  final String title;
+  final int id;
+  String? isayatsurah;
+  int? isayatsurahid;
+
+  @override
+  String toString() {
+    return '$title, $id';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (other.runtimeType != runtimeType) {
+      return false;
+    }
+    return other is SearchObject && other.title == title && other.id == id;
+  }
+
+  @override
+  int get hashCode => hashValues(title, id);
+}
+
+class AutocompleteBasicUserExample extends StatelessWidget {
+  const AutocompleteBasicUserExample({Key? key}) : super(key: key);
+
+  // static const List<SearchObject> _userOptions = <SearchObject>[
+  //   SearchObject(surahname: 'Alice', surahnumber: 1),
+  //   SearchObject(surahname: 'Bob', surahnumber: 2),
+  //   SearchObject(surahname: 'Charlie', surahnumber: 3),
+  // ];
+  static final List searcHMap = Readable.QuranData as List;
+  static final List<SearchObject> _userOptions = searcHMap.map((e) {
+    return SearchObject(title: e['transliteration'], id: e['id']);
+  }).toList()
+    ..add(SearchObject(
+        title: 'Ayatul Kursi',
+        id: 255,
+        isayatsurah: 'Al-Baqarah',
+        isayatsurahid: 2));
+
+  static String _displayStringForOption(SearchObject option) => option.title;
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<String>(
+    return Autocomplete<SearchObject>(
+      // initialValue: TextEditingValue(text: 'Al-Fatihah'),
+      displayStringForOption: _displayStringForOption,
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
-          return const Iterable<String>.empty();
+          return const Iterable<SearchObject>.empty();
         }
-        return _kOptions.where((String option) {
-          return option.contains(textEditingValue.text.toLowerCase());
+        return _userOptions.where((SearchObject option) {
+          return option.title
+              .toLowerCase()
+              .toString()
+              .contains(textEditingValue.text.toLowerCase());
         });
       },
-      onSelected: (String selection) {
-        debugPrint('You just selected $selection');
+      onSelected: (SearchObject selection) {
+        debugPrint('You just selected ${_displayStringForOption(selection)}');
+        if (selection.isayatsurah == null && selection.isayatsurahid == null) {
+          Navigator.pushNamed(context, '/quran?surah=${selection.id}');
+        } else {
+          Navigator.pushNamed(context,
+              '/quran?surah=${selection.isayatsurahid}&&ayat=${selection.id}');
+        }
       },
     );
   }
