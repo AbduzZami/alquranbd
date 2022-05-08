@@ -117,6 +117,7 @@ class _HomePageState extends State<HomePage> {
       width: 1000,
       child: GridView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           // return ListTile(
           //   leading: Text((index + 1).toString()),
@@ -151,6 +152,7 @@ class _HomePageState extends State<HomePage> {
       width: 700,
       child: GridView.builder(
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           // return ListTile(
           //   leading: Text((index + 1).toString()),
@@ -186,7 +188,7 @@ class _HomePageState extends State<HomePage> {
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: ListView.builder(
         shrinkWrap: true,
-
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
           // return ListTile(
           //   leading: Text((index + 1).toString()),
@@ -254,11 +256,6 @@ class SearchObject {
 class AutocompleteBasicUserExample extends StatelessWidget {
   const AutocompleteBasicUserExample({Key? key}) : super(key: key);
 
-  // static const List<SearchObject> _userOptions = <SearchObject>[
-  //   SearchObject(surahname: 'Alice', surahnumber: 1),
-  //   SearchObject(surahname: 'Bob', surahnumber: 2),
-  //   SearchObject(surahname: 'Charlie', surahnumber: 3),
-  // ];
   static final List searcHMap = Readable.QuranData as List;
   static final List<SearchObject> _userOptions = searcHMap.map((e) {
     return SearchObject(title: e['transliteration'], id: e['id']);
@@ -268,8 +265,6 @@ class AutocompleteBasicUserExample extends StatelessWidget {
         id: 255,
         isayatsurah: 'Al-Baqarah',
         isayatsurahid: 2));
-
-  static String _displayStringForOption(SearchObject option) => option.title;
 
   @override
   Widget build(BuildContext context) {
