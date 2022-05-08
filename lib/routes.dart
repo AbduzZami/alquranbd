@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'screens/page_not_available.dart';
 
 class RoutesName {
-  static const String home = '/home';
+  static const String home = '/';
   // ignore: non_constant_identifier_names
   static const String quran = '/quran';
   // ignore: non_constant_identifier_names
@@ -36,8 +36,10 @@ class RouteGenerator {
     //     return _GeneratePageRoute(
     //         widget: const ThisPageIsNotAvailable(), routeName: settings.name!);
     // }
-
-    if (routingData.route == RoutesName.quran &&
+    if (routingData.route == RoutesName.home) {
+      return _GeneratePageRoute(
+          widget: const HomePage(), routeName: settings.name!);
+    } else if (routingData.route == RoutesName.quran &&
         routingData._queryParameters['surah'] != null &&
         routingData._queryParameters['ayat'] == null &&
         int.parse(routingData._queryParameters['surah']!) >= 1 &&
