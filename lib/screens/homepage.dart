@@ -3,7 +3,7 @@ import 'package:alquranbd/widgets/homedrawer.dart';
 import 'package:alquranbd/widgets/searchshortcut.dart';
 import 'package:alquranbd/widgets/surahcard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -46,16 +46,7 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                    child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              width: 3,
-                              color: Theme.of(context).primaryColor,
-                            )),
-                        child: AutocompleteBasicUserExample()),
+                    child: AutocompleteBasicUserExample(),
                   ),
                   SizedBox(
                     height: 15,
@@ -94,6 +85,20 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )),
+        Text('সুরাহ সমূহ',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColorDark)),
+        Container(
+          margin: EdgeInsets.all(4),
+          height: 3,
+          width: 80,
+          color: Theme.of(context).primaryColor,
+        ),
+        SizedBox(
+          height: 20,
+        ),
         Center(child: LayoutBuilder(builder: ((context, constraints) {
           if (constraints.maxWidth > 1010) {
             return LargeScreen();
@@ -268,27 +273,65 @@ class AutocompleteBasicUserExample extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<SearchObject>(
-      // initialValue: TextEditingValue(text: 'Al-Fatihah'),
-      displayStringForOption: _displayStringForOption,
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<SearchObject>.empty();
-        }
-        return _userOptions.where((SearchObject option) {
-          return option.title
-              .toLowerCase()
-              .toString()
-              .contains(textEditingValue.text.toLowerCase());
-        });
+    OutlineInputBorder _inputBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: Theme.of(context).primaryColor),
+    );
+    OutlineInputBorder _inputFocusBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 3.0),
+    );
+    return TypeAheadField(
+      noItemsFoundBuilder: (BuildContext context) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: Text(
+            'এই নামে কিছু পাওয়া যায়নি',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Theme.of(context).disabledColor),
+          ),
+        );
       },
-      onSelected: (SearchObject selection) {
-        debugPrint('You just selected ${_displayStringForOption(selection)}');
-        if (selection.isayatsurah == null && selection.isayatsurahid == null) {
-          Navigator.pushNamed(context, '/quran?surah=${selection.id}');
+      minCharsForSuggestions: 1,
+      textFieldConfiguration: TextFieldConfiguration(
+          decoration: InputDecoration(
+              labelText: 'খোঁজ করুন',
+              labelStyle: TextStyle(color: Theme.of(context).primaryColorDark),
+              hintText: 'ex: Al-Fatihah, Ayatul Kursi',
+              hintStyle: TextStyle(color: Colors.grey),
+              border: _inputBorder,
+              focusedBorder: _inputFocusBorder)),
+      suggestionsCallback: (pattern) {
+        // return CitiesService.getSuggestions(pattern);
+        return _userOptions.where((element) => element.title
+            .toLowerCase()
+            .trim()
+            .replaceAll(' ', '')
+            .replaceAll('-', '')
+            .contains(pattern
+                .toLowerCase()
+                .trim()
+                .replaceAll(' ', '')
+                .replaceAll('-', '')));
+      },
+      itemBuilder: (context, SearchObject suggestion) {
+        return ListTile(
+          leading: Icon(
+            Icons.read_more,
+            color: Theme.of(context).primaryColor,
+          ),
+          title: Text(suggestion.title),
+          subtitle: Text((suggestion.isayatsurah == null)
+              ? suggestion.id.toString()
+              : suggestion.isayatsurah!),
+        );
+      },
+      onSuggestionSelected: (SearchObject suggestion) {
+        print(suggestion);
+        if (suggestion.isayatsurah == null &&
+            suggestion.isayatsurahid == null) {
+          Navigator.pushNamed(context, '/quran?surah=${suggestion.id}');
         } else {
           Navigator.pushNamed(context,
-              '/quran?surah=${selection.isayatsurahid}&&ayat=${selection.id}');
+              '/quran?surah=${suggestion.isayatsurahid}&&ayat=${suggestion.id}');
         }
       },
     );

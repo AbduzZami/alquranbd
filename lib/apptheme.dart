@@ -5,7 +5,7 @@ class AppTheme {
     return ThemeData(
       primaryColor: Color.fromARGB(255, 123, 212, 142),
       primaryColorLight: Color.fromARGB(255, 207, 236, 211),
-      primaryColorDark: Color.fromARGB(255, 24, 46, 11),
+      primaryColorDark: Color.fromARGB(255, 53, 97, 27),
       brightness: Brightness.light,
       checkboxTheme: CheckboxThemeData(
         fillColor: MaterialStateColor.resolveWith((states) {

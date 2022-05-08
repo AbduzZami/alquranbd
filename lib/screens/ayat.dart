@@ -47,34 +47,39 @@ class _AyatState extends State<Ayat> {
                 textAlign: TextAlign.center,
               ),
               SelectableText(
-                ayat['id'].toString(),
+                'Ayat - ' + ayat['id'].toString(),
                 textAlign: TextAlign.center,
               ),
             ]),
           )),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        width: MediaQuery.of(context).size.width,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: SelectableText(
-              ayat['text'],
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+          width: MediaQuery.of(context).size.width,
+          child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: SelectableText(
+                ayat['text'],
+                textAlign: TextAlign.end,
+                style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: SelectableText(
-              ayat['translation'],
-              textAlign: TextAlign.start,
+            SizedBox(
+              height: 20,
             ),
-          ),
-        ]),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: SelectableText(
+                ayat['translation'],
+                textAlign: TextAlign.start,
+              ),
+            ),
+          ]),
+        ),
       ),
     );
   }

@@ -69,8 +69,8 @@ class _SurahState extends State<Surah> {
               surah['verses'][index]['text'],
               textAlign: TextAlign.end,
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 30,
+                fontWeight: FontWeight.normal,
               ),
             ),
             subtitle: Text(
