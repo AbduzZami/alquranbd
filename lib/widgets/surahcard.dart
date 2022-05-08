@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../readable.dart';
 
 class SurahCard extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SurahCardState extends State<SurahCard> {
                   width: 30,
                 ),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(Readable.QuranData[widget.index]['transliteration']),
@@ -40,10 +40,16 @@ class _SurahCardState extends State<SurahCard> {
                 ),
                 Spacer(),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(Readable.QuranData[widget.index]['name']),
+                    Text(
+                      Readable.QuranData[widget.index]['name'],
+                      style: GoogleFonts.lateef(
+                        textStyle: TextStyle(
+                            fontWeight: FontWeight.normal, fontSize: 25),
+                      ),
+                    ),
                     SizedBox(height: 10),
                     Text(Readable.QuranData[widget.index]['total_verses']
                         .toString()),

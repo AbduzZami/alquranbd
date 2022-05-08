@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 import '../readable.dart';
 
 class Ayat extends StatefulWidget {
@@ -25,15 +25,14 @@ class _AyatState extends State<Ayat> {
           children: [
             Text(
               surah['name'],
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+              style: GoogleFonts.lateef(
+                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
             ),
             Container(
               margin: EdgeInsets.all(8),
               width: 3,
-              height: 20,
+              height: 25,
               color: Theme.of(context).highlightColor,
             ),
             Column(
@@ -59,110 +58,119 @@ class _AyatState extends State<Ayat> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SelectableText(
-                  surah['name'],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SelectableText(
+                surah['name'],
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                ),
+              ),
+              SelectableText(
+                'بسم الله الرحمن الرحيم',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SelectableText(
+                        surah['transliteration'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SelectableText(
+                        surah['translation'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                SelectableText(
-                  'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
-                  style: TextStyle(
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    width: 2,
+                    height: 40,
+                    color: Theme.of(context).highlightColor,
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(
+                  Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SelectableText(
-                          surah['transliteration'],
+                          'আয়াত ',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         SelectableText(
-                          surah['translation'],
+                          ayat['id'].toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ],
-                    ),
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      width: 2,
-                      height: 40,
-                      color: Theme.of(context).highlightColor,
-                    ),
-                    Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SelectableText(
-                            'আয়াত ',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          SelectableText(
-                            ayat['id'].toString(),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
+                      ]),
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: SelectableText(
                     ayat['text'],
                     textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontSize: 50,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.lateef(
+                      textStyle: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 50,
+                          letterSpacing: 0.5),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: SelectableText(
                     ayat['translation'],
                     textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ),
-              ]),
-        ),
+              ),
+            ]),
       ),
     );
   }

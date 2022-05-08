@@ -1,6 +1,7 @@
 import 'package:alquranbd/readable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Surah extends StatefulWidget {
   // final surah;
@@ -28,20 +29,21 @@ class _SurahState extends State<Surah> {
             children: [
               Text(
                 surah['name'],
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                 ),
               ),
               Container(
                 margin: EdgeInsets.all(8),
                 width: 3,
-                height: 20,
+                height: 25,
                 color: Theme.of(context).highlightColor,
               ),
               Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
                       surah['transliteration'],
@@ -52,35 +54,33 @@ class _SurahState extends State<Surah> {
                     ),
                     Text(
                       surah['translation'],
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
                     ),
                   ]),
             ],
           ),
         ),
-        // title: Text(widget.surah['name']),
-
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
             children: [
               SelectableText(
                 surah['name'],
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                 ),
               ),
               SelectableText(
-                'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold,
+                'بسم الله الرحمن الرحيم',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                 ),
               ),
               SizedBox(
@@ -140,7 +140,7 @@ class _SurahState extends State<Surah> {
                 ],
               ),
               SizedBox(
-                height: 10,
+                height: 30,
               ),
               ListView.builder(
                 shrinkWrap: true,
@@ -148,17 +148,26 @@ class _SurahState extends State<Surah> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     leading: SelectableText((index + 1).toString()),
-                    title: Text(
-                      surah['verses'][index]['text'],
-                      textAlign: TextAlign.end,
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.normal,
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        surah['verses'][index]['text'],
+                        textAlign: TextAlign.end,
+                        style: GoogleFonts.lateef(
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.normal, fontSize: 40),
+                        ),
                       ),
                     ),
-                    subtitle: Text(
-                      surah['verses'][index]['translation'],
-                      textAlign: TextAlign.start,
+                    subtitle: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        surah['verses'][index]['translation'],
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                     ),
                     onTap: () {
                       Navigator.pushNamed(context,
