@@ -24,7 +24,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                   'আল কুরআন',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.bold,
                     color: Theme.of(context).primaryColorDark,
                   ),
                 ),

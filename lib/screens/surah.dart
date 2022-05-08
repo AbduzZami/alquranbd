@@ -21,70 +21,155 @@ class _SurahState extends State<Surah> {
     //   primaryColor: Theme.of(context).primaryColor.value,
     // ));
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(200),
-          child: SafeArea(
-            child: Column(children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.arrow_back)),
-              ),
-              SelectableText(
+        appBar: AppBar(
+          elevation: 0,
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
                 surah['name'],
-                textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SelectableText(
-                surah['transliteration'],
-                textAlign: TextAlign.center,
+              Container(
+                margin: EdgeInsets.all(8),
+                width: 3,
+                height: 20,
+                color: Theme.of(context).highlightColor,
               ),
-              SelectableText(
-                surah['translation'],
-                textAlign: TextAlign.center,
-              ),
-              SelectableText(
-                surah['type'],
-                textAlign: TextAlign.center,
-              ),
-              SelectableText(
-                surah['total_verses'].toString(),
-                textAlign: TextAlign.center,
-              ),
-            ]),
-          )),
-      // title: Text(widget.surah['name']),
+              Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      surah['transliteration'],
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      surah['translation'],
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ]),
+            ],
+          ),
+        ),
+        // title: Text(widget.surah['name']),
 
-      body: ListView.builder(
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: SelectableText((index + 1).toString()),
-            title: Text(
-              surah['verses'][index]['text'],
-              textAlign: TextAlign.end,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.normal,
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SelectableText(
+                surah['name'],
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            subtitle: Text(
-              surah['verses'][index]['translation'],
-              textAlign: TextAlign.start,
-            ),
-            onTap: () {
-              Navigator.pushNamed(
-                  context, '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
-            },
-          );
-        },
-        itemCount: surah['verses'].length,
-      ),
-    );
+              SelectableText(
+                'بِسْمِ ٱللَّٰهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      SelectableText(
+                        surah['transliteration'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SelectableText(
+                        surah['translation'],
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    width: 2,
+                    height: 40,
+                    color: Theme.of(context).highlightColor,
+                  ),
+                  Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SelectableText(
+                          surah['type'],
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SelectableText(
+                          surah['total_verses'].toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ]),
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: SelectableText((index + 1).toString()),
+                    title: Text(
+                      surah['verses'][index]['text'],
+                      textAlign: TextAlign.end,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    subtitle: Text(
+                      surah['verses'][index]['translation'],
+                      textAlign: TextAlign.start,
+                    ),
+                    onTap: () {
+                      Navigator.pushNamed(context,
+                          '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
+                    },
+                  );
+                },
+                itemCount: surah['verses'].length,
+              ),
+            ],
+          ),
+        ));
   }
 }

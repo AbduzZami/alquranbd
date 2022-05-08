@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: SelectableText(
           'আল কুরআন',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
