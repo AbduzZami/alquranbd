@@ -50,6 +50,7 @@ dev_dependencies:
   font_awesome_flutter: ^10.1.0
   url_launcher: ^6.1.0
   google_fonts: ^2.3.2
+  pagination_view: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
