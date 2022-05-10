@@ -1,4 +1,5 @@
 import 'package:alquranbd/readable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,9 +14,45 @@ class Surah extends StatefulWidget {
 }
 
 class _SurahState extends State<Surah> {
+  var surah;
+  final ScrollController _scrollController = ScrollController();
+  late int currentIndex;
+  late int maxIndex;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    surah = Readable.QuranData[widget.surahNumber - 1];
+    maxIndex = surah['verses'].length - 1;
+    currentIndex = maxIndex > 10 ? 10 : maxIndex;
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        _getMoreData();
+        debugPrint('End Scroll');
+      }
+    });
+    super.initState();
+  }
+
+  _getMoreData() {
+    if (currentIndex < maxIndex) {
+      if (currentIndex + 10 < maxIndex) {
+        setState(() {
+          currentIndex += 10;
+        });
+      } else {
+        setState(() {
+          currentIndex = maxIndex;
+        });
+      }
+    } else {
+      debugPrint('No more data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var surah = Readable.QuranData[widget.surahNumber - 1];
     // SystemChrome.setApplicationSwitcherDescription(
     //     ApplicationSwitcherDescription(
     //   label: 'QuranBD | Surah | $widget.surahNumber',
@@ -62,6 +99,7 @@ class _SurahState extends State<Surah> {
           ),
         ),
         body: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,36 +184,40 @@ class _SurahState extends State<Surah> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: SelectableText((index + 1).toString()),
-                    title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        surah['verses'][index]['text'],
-                        textAlign: TextAlign.end,
-                        style: GoogleFonts.lateef(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 40),
+                  if (index == currentIndex && currentIndex < maxIndex) {
+                    return CupertinoActivityIndicator();
+                  } else {
+                    return ListTile(
+                      leading: SelectableText((index + 1).toString()),
+                      title: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          surah['verses'][index]['text'],
+                          textAlign: TextAlign.end,
+                          style: GoogleFonts.lateef(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 40),
+                          ),
                         ),
                       ),
-                    ),
-                    subtitle: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        surah['verses'][index]['translation'],
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
+                      subtitle: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          surah['verses'][index]['translation'],
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context,
-                          '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
-                    },
-                  );
+                      onTap: () {
+                        Navigator.pushNamed(context,
+                            '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
+                      },
+                    );
+                  }
                 },
-                itemCount: surah['verses'].length,
+                itemCount: currentIndex + 1,
               ),
               Padding(
                   padding: const EdgeInsets.all(30.0),

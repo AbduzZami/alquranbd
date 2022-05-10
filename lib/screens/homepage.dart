@@ -5,6 +5,7 @@ import 'package:alquranbd/widgets/surahcard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
           child: Column(children: [
         Container(
-            height: 400,
+            height: 500,
             constraints: BoxConstraints(
               maxWidth: 700,
             ),
@@ -45,6 +46,24 @@ class _HomePageState extends State<HomePage> {
                 // mainAxisAlignment: MainAxisAlignment.center,
 
                 children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: FittedBox(
+                        child: SelectableText(
+                            'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ',
+                            maxLines: 1,
+                            style: GoogleFonts.notoNaskhArabic(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColorDark)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: AutocompleteBasicUserExample(),
@@ -303,6 +322,7 @@ class AutocompleteBasicUserExample extends StatelessWidget {
       },
       minCharsForSuggestions: 1,
       textFieldConfiguration: TextFieldConfiguration(
+          autofocus: true,
           decoration: InputDecoration(
               labelText: 'খোঁজ করুন',
               labelStyle: TextStyle(color: Theme.of(context).primaryColorDark),

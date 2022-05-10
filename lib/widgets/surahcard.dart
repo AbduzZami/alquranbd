@@ -45,9 +45,9 @@ class _SurahCardState extends State<SurahCard> {
                   children: [
                     Text(
                       Readable.QuranData[widget.index]['name'],
-                      style: GoogleFonts.lateef(
+                      style: GoogleFonts.notoNaskhArabic(
                         textStyle: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 25),
+                            fontWeight: FontWeight.normal, fontSize: 20),
                       ),
                     ),
                     SizedBox(height: 10),
