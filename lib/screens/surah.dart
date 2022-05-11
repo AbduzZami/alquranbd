@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:alquranbd/readable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:http/http.dart' as http;
 
-import '../models/album.dart';
+import '../models/surahaudio.dart';
 
 class Surah extends StatefulWidget {
   // final surah;
@@ -26,7 +27,7 @@ class _SurahState extends State<Surah> {
   final ScrollController _scrollController = ScrollController();
   late int currentIndex;
   late int maxIndex;
-  final assetsAudioPlayer = AssetsAudioPlayer();
+  final surahAudioPlayer = AssetsAudioPlayer();
   bool isPlayingAudio = false;
   bool isPlayable = false;
 
@@ -44,23 +45,32 @@ class _SurahState extends State<Surah> {
       }
     });
     _getAudio();
+    surahAudioPlayer.isPlaying.listen((isPlaying) {
+      if (mounted) {
+        setState(() {
+          isPlayingAudio = isPlaying;
+        });
+      }
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    surahAudioPlayer.stop();
     super.dispose();
-    assetsAudioPlayer.stop();
   }
 
-  Future<Album> fetchAlbum() async {
-    final response = await http.get(Uri.parse(
-        'http://api.alquran.cloud/v1/surah/{$widget.surahNumber}/ar.alafasy'));
+  Future<SurahAudio> fetchAlbum() async {
+    String surahNumber = widget.surahNumber.toString();
+    String url = 'http://api.alquran.cloud/v1/surah/$surahNumber/ar.alafasy';
+
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      return Album.fromJson(jsonDecode(response.body));
+      return SurahAudio.fromJson(jsonDecode(response.body));
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -69,38 +79,38 @@ class _SurahState extends State<Surah> {
   }
 
   _getAudio() async {
-    final album = await fetchAlbum();
-
-    try {
-      await assetsAudioPlayer
-          .open(
-              Playlist(
-                  audios: album.audiourls
-                      .map((audio) => Audio.network(audio['audio']))
-                      .toList()),
-              autoStart: false)
-          .then((value) {
-        setState(() {
-          isPlayable = true;
+    await fetchAlbum().then((value) async {
+      try {
+        await surahAudioPlayer
+            .open(
+                Playlist(
+                    audios: value.audiourls
+                        .map((audio) => Audio.network(audio['audio']))
+                        .toList()),
+                autoStart: false)
+            .then((value) {
+          setState(() {
+            isPlayable = true;
+          });
         });
-      });
 
-      // assetsAudioPlayer.play();
-    } catch (t) {
-      //mp3 unreachable
-    }
+        // assetsAudioPlayer.play();
+      } catch (t) {
+        //mp3 unreachable
+      }
+    });
   }
 
   _playorPauseAudio() async {
     if (isPlayable) {
       if (!isPlayingAudio) {
-        assetsAudioPlayer.play();
+        surahAudioPlayer.play();
         setState(() {
           isPlayingAudio = true;
         });
       } else {
         // assetsAudioPlayer.stop();
-        assetsAudioPlayer.pause();
+        surahAudioPlayer.pause();
 
         setState(() {
           isPlayingAudio = false;
@@ -140,9 +150,9 @@ class _SurahState extends State<Surah> {
             children: [
               Text(
                 surah['name'],
-                style: GoogleFonts.lateef(
+                style: GoogleFonts.notoNaskhArabic(
                   textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                 ),
               ),
               Container(
@@ -180,6 +190,16 @@ class _SurahState extends State<Surah> {
                 _playorPauseAudio();
               },
             ),
+            IconButton(
+                onPressed: () {
+                  String url =
+                      'https://quran-bd.web.app/quran?surah=${widget.surahNumber}';
+                  Clipboard.setData(ClipboardData(text: url)).then((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Link copied to clipboard")));
+                  });
+                },
+                icon: Icon(CupertinoIcons.link_circle_fill)),
           ],
         ),
         body: SingleChildScrollView(
@@ -192,17 +212,17 @@ class _SurahState extends State<Surah> {
               SelectableText(
                 surah['name'],
                 textAlign: TextAlign.center,
-                style: GoogleFonts.lateef(
+                style: GoogleFonts.notoNaskhArabic(
                   textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
               ),
               SelectableText(
                 'بسم الله الرحمن الرحيم',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.lateef(
+                style: GoogleFonts.notoNaskhArabic(
                   textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
               ),
               SizedBox(
@@ -278,9 +298,9 @@ class _SurahState extends State<Surah> {
                         child: Text(
                           surah['verses'][index]['text'],
                           textAlign: TextAlign.end,
-                          style: GoogleFonts.lateef(
+                          style: GoogleFonts.notoNaskhArabic(
                             textStyle: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 40),
+                                fontWeight: FontWeight.normal, fontSize: 35),
                           ),
                         ),
                       ),
@@ -295,6 +315,7 @@ class _SurahState extends State<Surah> {
                         ),
                       ),
                       onTap: () {
+                        surahAudioPlayer.stop();
                         Navigator.pushNamed(context,
                             '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
                       },

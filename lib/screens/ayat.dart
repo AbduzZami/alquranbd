@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:alquranbd/models/ayataudio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../readable.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:http/http.dart' as http;
 
 class Ayat extends StatefulWidget {
   final int surahNumber, ayatNumber;
@@ -13,6 +20,85 @@ class Ayat extends StatefulWidget {
 }
 
 class _AyatState extends State<Ayat> {
+  final ayatAudioPlayer = AssetsAudioPlayer();
+  bool isPlayingAudio = false;
+  bool isPlayable = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _getAudio();
+    ayatAudioPlayer.isPlaying.listen((isPlaying) {
+      if (mounted) {
+        setState(() {
+          isPlayingAudio = isPlaying;
+        });
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    ayatAudioPlayer.stop();
+    super.dispose();
+  }
+
+  Future<AyatAudio> fetchAlbum() async {
+    String surahNumber = widget.surahNumber.toString();
+    String ayatNumber = widget.ayatNumber.toString();
+    String url =
+        'http://api.alquran.cloud/v1/ayah/$surahNumber:$ayatNumber/ar.alafasy';
+
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return AyatAudio.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  _getAudio() async {
+    await fetchAlbum().then((value) async {
+      try {
+        await ayatAudioPlayer
+            .open(Audio.network(value.audioUrl), autoStart: false)
+            .then((value) {
+          setState(() {
+            isPlayable = true;
+          });
+        });
+
+        // assetsAudioPlayer.play();
+      } catch (t) {
+        //mp3 unreachable
+      }
+    });
+  }
+
+  _playorPauseAudio() async {
+    if (isPlayable) {
+      if (!isPlayingAudio) {
+        ayatAudioPlayer.play();
+        setState(() {
+          isPlayingAudio = true;
+        });
+      } else {
+        // assetsAudioPlayer.stop();
+        ayatAudioPlayer.pause();
+
+        setState(() {
+          isPlayingAudio = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var ayat = Readable.QuranData[widget.surahNumber - 1]['verses']
@@ -26,8 +112,8 @@ class _AyatState extends State<Ayat> {
           children: [
             Text(
               surah['name'],
-              style: GoogleFonts.lateef(
-                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              style: GoogleFonts.notoNaskhArabic(
+                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
             ),
             Container(
@@ -57,6 +143,25 @@ class _AyatState extends State<Ayat> {
                 ]),
           ],
         ),
+        actions: [
+          IconButton(
+            icon:
+                (isPlayingAudio) ? Icon(Icons.pause) : Icon(Icons.play_circle),
+            onPressed: () {
+              _playorPauseAudio();
+            },
+          ),
+          IconButton(
+              onPressed: () {
+                String url =
+                    'https://quran-bd.web.app/quran?surah=${widget.surahNumber}&&ayat=${widget.ayatNumber}';
+                Clipboard.setData(ClipboardData(text: url)).then((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text("Email address copied to clipboard")));
+                });
+              },
+              icon: Icon(CupertinoIcons.link_circle_fill)),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -67,17 +172,17 @@ class _AyatState extends State<Ayat> {
               SelectableText(
                 surah['name'],
                 textAlign: TextAlign.center,
-                style: GoogleFonts.lateef(
+                style: GoogleFonts.notoNaskhArabic(
                   textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
               ),
               SelectableText(
                 'بسم الله الرحمن الرحيم',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.lateef(
+                style: GoogleFonts.notoNaskhArabic(
                   textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
               ),
               SizedBox(
@@ -146,11 +251,11 @@ class _AyatState extends State<Ayat> {
                   child: SelectableText(
                     ayat['text'],
                     textAlign: TextAlign.end,
-                    style: GoogleFonts.lateef(
+                    style: GoogleFonts.notoSansArabic(
                       textStyle: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 50,
-                          letterSpacing: 0.5),
+                        fontWeight: FontWeight.normal,
+                        fontSize: 45,
+                      ),
                     ),
                   ),
                 ),

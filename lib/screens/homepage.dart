@@ -2,6 +2,7 @@ import 'package:alquranbd/readable.dart';
 import 'package:alquranbd/widgets/homedrawer.dart';
 import 'package:alquranbd/widgets/searchshortcut.dart';
 import 'package:alquranbd/widgets/surahcard.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -322,7 +323,11 @@ class AutocompleteBasicUserExample extends StatelessWidget {
       },
       minCharsForSuggestions: 1,
       textFieldConfiguration: TextFieldConfiguration(
-          autofocus: true,
+          autofocus: (defaultTargetPlatform == TargetPlatform.windows ||
+                  defaultTargetPlatform == TargetPlatform.macOS ||
+                  defaultTargetPlatform == TargetPlatform.linux)
+              ? true
+              : false,
           decoration: InputDecoration(
               labelText: 'খোঁজ করুন',
               labelStyle: TextStyle(color: Theme.of(context).primaryColorDark),

@@ -94,6 +94,40 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       color: Theme.of(context).primaryColorDark,
                     )),
               ]),
+              SizedBox(height: 40),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SelectableText(
+                  'Link to third party resources used in this website',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse(
+                          'https://www.npmjs.com/package/quran-json'));
+                    },
+                    child: Text(
+                      'Quran with Bangla translation Json File',
+                      textAlign: TextAlign.center,
+                    )),
+              ),
+              SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: TextButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse('https://alquran.cloud/api'));
+                    },
+                    child: Text(
+                      'Quran recitation of Mishary bin Rashid Alafasy',
+                      textAlign: TextAlign.center,
+                    )),
+              ),
+              SizedBox(height: 20),
             ],
           )
         ],
