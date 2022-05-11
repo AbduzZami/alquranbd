@@ -22,11 +22,11 @@ class MyApp extends StatelessWidget {
       title: 'Al Quran BD',
 
       theme: AppTheme.light(),
-      home: const HomePage(),
+      // home: const HomePage(),
       debugShowCheckedModeBanner: false,
       // builder: (context, child) => MainPage(child: child!),
       onGenerateRoute: RouteGenerator.generateRoute,
-      // initialRoute: RoutesName.home,
+      initialRoute: RoutesName.home,
     );
   }
 }

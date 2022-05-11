@@ -16,6 +16,7 @@ class _SurahCardState extends State<SurahCard> {
     return InkWell(
       onTap: (() {
         Navigator.pushNamed(context, '/quran?surah=${widget.index + 1}');
+        // Navigator.popAndPushNamed(context, '/quran?surah=${widget.index + 1}');
       }),
       child: Card(
         child: Container(

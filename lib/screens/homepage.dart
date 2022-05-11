@@ -24,131 +24,127 @@ class _HomePageState extends State<HomePage> {
     //   primaryColor: Theme.of(context).primaryColor.value,
     // ));
 
-    return Title(
-      color: Theme.of(context).primaryColor,
-      title: 'Al Quran BD',
-      child: Scaffold(
-        drawer: HomeDrawer(),
-        appBar: AppBar(
-          elevation: 0,
-          // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          title: SelectableText(
-            'আল কুরআন',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
+    return Scaffold(
+      drawer: HomeDrawer(),
+      appBar: AppBar(
+        elevation: 0,
+        // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: SelectableText(
+          'আল কুরআন',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
-        body: SingleChildScrollView(
-            child: Column(children: [
-          Container(
-              height: 500,
-              constraints: BoxConstraints(
-                maxWidth: 700,
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  // mainAxisAlignment: MainAxisAlignment.center,
+      ),
+      body: SingleChildScrollView(
+          child: Column(children: [
+        Container(
+            height: 500,
+            constraints: BoxConstraints(
+              maxWidth: 700,
+            ),
+            child: Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.center,
 
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: FittedBox(
-                          child: SelectableText(
-                              'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ',
-                              maxLines: 1,
-                              style: GoogleFonts.notoNaskhArabic(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColorDark)),
-                        ),
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: FittedBox(
+                        child: SelectableText(
+                            'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ',
+                            maxLines: 1,
+                            style: GoogleFonts.notoNaskhArabic(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColorDark)),
                       ),
                     ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                      child: AutocompleteBasicUserExample(),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Wrap(
-                      alignment: WrapAlignment.center,
-                      children: [
-                        SearchShortCut(
-                            onTap: (() {
-                              Navigator.pushNamed(context, '/quran?surah=1');
-                            }),
-                            text: 'সুরাহ আল ফাতিহা'),
-                        SearchShortCut(
-                            onTap: (() {
-                              Navigator.pushNamed(
-                                  context, '/quran?surah=2&&ayat=255');
-                            }),
-                            text: 'আয়াতুল কুরসি'),
-                        SearchShortCut(
-                            onTap: (() {
-                              Navigator.pushNamed(context, '/quran?surah=36');
-                            }),
-                            text: 'সুরাহ আল ইয়াসিন'),
-                        SearchShortCut(
-                            onTap: (() {
-                              Navigator.pushNamed(context, '/quran?surah=55');
-                            }),
-                            text: 'সুরাহ আর রাহমান'),
-                        SearchShortCut(
-                            onTap: (() {
-                              Navigator.pushNamed(context, '/quran?surah=67');
-                            }),
-                            text: 'সুরাহ আল মুল্ক'),
-                      ],
-                    )
-                  ],
-                ),
-              )),
-          Text('সুরাহ সমূহ',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColorDark)),
-          Container(
-            margin: EdgeInsets.all(4),
-            height: 3,
-            width: 80,
-            color: Theme.of(context).primaryColor,
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(child: LayoutBuilder(builder: ((context, constraints) {
-            if (constraints.maxWidth > 1010) {
-              return LargeScreen();
-            } else if (constraints.maxWidth > 710) {
-              return MediumScreen();
-            } else {
-              return SmallScreen();
-            }
-          }))),
-          Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text('কপিরাইট ©'),
-                  TextButton(
-                      onPressed: () {
-                        launchUrl(Uri.parse('https://facebook.com/abduzzami'));
-                      },
-                      child: Text('আব্দুজ জামি', textAlign: TextAlign.center))
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: AutocompleteBasicUserExample(),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    children: [
+                      SearchShortCut(
+                          onTap: (() {
+                            Navigator.pushNamed(context, '/quran?surah=1');
+                          }),
+                          text: 'সুরাহ আল ফাতিহা'),
+                      SearchShortCut(
+                          onTap: (() {
+                            Navigator.pushNamed(
+                                context, '/quran?surah=2&&ayat=255');
+                          }),
+                          text: 'আয়াতুল কুরসি'),
+                      SearchShortCut(
+                          onTap: (() {
+                            Navigator.pushNamed(context, '/quran?surah=36');
+                          }),
+                          text: 'সুরাহ আল ইয়াসিন'),
+                      SearchShortCut(
+                          onTap: (() {
+                            Navigator.pushNamed(context, '/quran?surah=55');
+                          }),
+                          text: 'সুরাহ আর রাহমান'),
+                      SearchShortCut(
+                          onTap: (() {
+                            Navigator.pushNamed(context, '/quran?surah=67');
+                          }),
+                          text: 'সুরাহ আল মুল্ক'),
+                    ],
+                  )
                 ],
-              )),
-        ])),
-      ),
+              ),
+            )),
+        Text('সুরাহ সমূহ',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColorDark)),
+        Container(
+          margin: EdgeInsets.all(4),
+          height: 3,
+          width: 80,
+          color: Theme.of(context).primaryColor,
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Center(child: LayoutBuilder(builder: ((context, constraints) {
+          if (constraints.maxWidth > 1010) {
+            return LargeScreen();
+          } else if (constraints.maxWidth > 710) {
+            return MediumScreen();
+          } else {
+            return SmallScreen();
+          }
+        }))),
+        Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text('কপিরাইট ©'),
+                TextButton(
+                    onPressed: () {
+                      launchUrl(Uri.parse('https://facebook.com/abduzzami'));
+                    },
+                    child: Text('আব্দুজ জামি', textAlign: TextAlign.center))
+              ],
+            )),
+      ])),
     );
   }
 
