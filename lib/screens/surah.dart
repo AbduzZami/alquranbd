@@ -1,12 +1,20 @@
+import 'dart:convert';
+
 import 'package:alquranbd/readable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:http/http.dart' as http;
+
+import '../models/album.dart';
 
 class Surah extends StatefulWidget {
   // final surah;
   final int surahNumber;
+
   const Surah({Key? key, required this.surahNumber}) : super(key: key);
 
   @override
@@ -18,6 +26,9 @@ class _SurahState extends State<Surah> {
   final ScrollController _scrollController = ScrollController();
   late int currentIndex;
   late int maxIndex;
+  final assetsAudioPlayer = AssetsAudioPlayer();
+  bool isPlayingAudio = false;
+  bool isPlayable = false;
 
   @override
   void initState() {
@@ -32,7 +43,70 @@ class _SurahState extends State<Surah> {
         debugPrint('End Scroll');
       }
     });
+    _getAudio();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    assetsAudioPlayer.stop();
+  }
+
+  Future<Album> fetchAlbum() async {
+    final response = await http.get(Uri.parse(
+        'http://api.alquran.cloud/v1/surah/{$widget.surahNumber}/ar.alafasy'));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return Album.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  _getAudio() async {
+    final album = await fetchAlbum();
+
+    try {
+      await assetsAudioPlayer
+          .open(
+              Playlist(
+                  audios: album.audiourls
+                      .map((audio) => Audio.network(audio['audio']))
+                      .toList()),
+              autoStart: false)
+          .then((value) {
+        setState(() {
+          isPlayable = true;
+        });
+      });
+
+      // assetsAudioPlayer.play();
+    } catch (t) {
+      //mp3 unreachable
+    }
+  }
+
+  _playorPauseAudio() async {
+    if (isPlayable) {
+      if (!isPlayingAudio) {
+        assetsAudioPlayer.play();
+        setState(() {
+          isPlayingAudio = true;
+        });
+      } else {
+        // assetsAudioPlayer.stop();
+        assetsAudioPlayer.pause();
+
+        setState(() {
+          isPlayingAudio = false;
+        });
+      }
+    }
   }
 
   _getMoreData() {
@@ -97,6 +171,16 @@ class _SurahState extends State<Surah> {
                   ]),
             ],
           ),
+          actions: [
+            IconButton(
+              icon: (isPlayingAudio)
+                  ? Icon(Icons.pause)
+                  : Icon(Icons.play_circle),
+              onPressed: () {
+                _playorPauseAudio();
+              },
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           controller: _scrollController,

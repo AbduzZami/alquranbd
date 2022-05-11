@@ -52,6 +52,8 @@ dev_dependencies:
   google_fonts: ^2.3.2
   pagination_view: ^2.0.0
   flutter_native_splash: ^2.1.6
+  audio_service: ^0.18.4
+  assets_audio_player: ^3.0.4+1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
