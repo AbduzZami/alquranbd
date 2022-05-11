@@ -142,207 +142,228 @@ class _SurahState extends State<Surah> {
     //   label: 'QuranBD | Surah | $widget.surahNumber',
     //   primaryColor: Theme.of(context).primaryColor.value,
     // ));
-    return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          title: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                surah['name'],
-                style: GoogleFonts.notoNaskhArabic(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(8),
-                width: 3,
-                height: 25,
-                color: Theme.of(context).highlightColor,
-              ),
-              Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Text(
-                      surah['transliteration'],
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      surah['translation'],
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                    ),
-                  ]),
-            ],
-          ),
-          actions: [
-            IconButton(
-              icon: (isPlayingAudio)
-                  ? Icon(Icons.pause)
-                  : Icon(Icons.play_circle),
-              onPressed: () {
-                _playorPauseAudio();
-              },
-            ),
-            IconButton(
-                onPressed: () {
-                  String url =
-                      'https://quran-bd.web.app/quran?surah=${widget.surahNumber}';
-                  Clipboard.setData(ClipboardData(text: url)).then((_) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Link copied to clipboard")));
-                  });
-                },
-                icon: Icon(CupertinoIcons.link_circle_fill)),
-          ],
-        ),
-        body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SelectableText(
-                surah['name'],
-                textAlign: TextAlign.center,
-                style: GoogleFonts.notoNaskhArabic(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                ),
-              ),
-              SelectableText(
-                'بسم الله الرحمن الرحيم',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.notoNaskhArabic(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushNamed(context, '/');
+        //we need to return a future
+        return Future.value(false);
+      },
+      child: Title(
+        color: Theme.of(context).primaryColor,
+        title: 'Al Quran BD | Surah ${widget.surahNumber}',
+        child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/');
+                  },
+                  icon: Icon(
+                    // Icons.arrow_back_ios_new,
+                    // size: 18,
+                    Icons.arrow_back,
+                  )),
+              elevation: 0,
+              title: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      SelectableText(
-                        surah['transliteration'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SelectableText(
-                        surah['translation'],
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    surah['name'],
+                    style: GoogleFonts.notoNaskhArabic(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(10),
-                    width: 2,
-                    height: 40,
+                    margin: EdgeInsets.all(8),
+                    width: 3,
+                    height: 25,
                     color: Theme.of(context).highlightColor,
                   ),
                   Column(
-                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
-                        SelectableText(
-                          surah['type'],
-                          textAlign: TextAlign.center,
+                        Text(
+                          surah['transliteration'],
                           style: TextStyle(
+                            fontSize: 10,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SelectableText(
-                          surah['total_verses'].toString(),
-                          textAlign: TextAlign.center,
+                        Text(
+                          surah['translation'],
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontWeight: FontWeight.bold, fontSize: 10),
                         ),
                       ]),
                 ],
               ),
-              SizedBox(
-                height: 30,
-              ),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  if (index == currentIndex && currentIndex < maxIndex) {
-                    return CupertinoActivityIndicator();
-                  } else {
-                    return ListTile(
-                      leading: SelectableText((index + 1).toString()),
-                      title: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          surah['verses'][index]['text'],
-                          textAlign: TextAlign.end,
-                          style: GoogleFonts.notoNaskhArabic(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 35),
-                          ),
-                        ),
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          surah['verses'][index]['translation'],
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        surahAudioPlayer.stop();
-                        Navigator.pushNamed(context,
-                            '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
-                      },
-                    );
-                  }
-                },
-                itemCount: currentIndex + 1,
-              ),
-              Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+              actions: [
+                IconButton(
+                  icon: (isPlayingAudio)
+                      ? Icon(Icons.pause)
+                      : Icon(Icons.play_circle),
+                  onPressed: () {
+                    _playorPauseAudio();
+                  },
+                ),
+                IconButton(
+                    onPressed: () {
+                      String url =
+                          'https://quran-bd.web.app/quran?surah=${widget.surahNumber}';
+                      Clipboard.setData(ClipboardData(text: url)).then((_) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Link copied to clipboard")));
+                      });
+                    },
+                    icon: Icon(CupertinoIcons.link_circle_fill)),
+              ],
+            ),
+            body: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SelectableText(
+                    surah['name'],
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.notoNaskhArabic(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                    ),
+                  ),
+                  SelectableText(
+                    'بسم الله الرحمن الرحيم',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.notoNaskhArabic(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('কপিরাইট ©'),
-                      TextButton(
-                          onPressed: () {
-                            launchUrl(
-                                Uri.parse('https://facebook.com/abduzzami'));
-                          },
-                          child:
-                              Text('আব্দুজ জামি', textAlign: TextAlign.center))
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SelectableText(
+                            surah['transliteration'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SelectableText(
+                            surah['translation'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        width: 2,
+                        height: 40,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SelectableText(
+                              surah['type'],
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SelectableText(
+                              surah['total_verses'].toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
                     ],
-                  )),
-            ],
-          ),
-        ));
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      if (index == currentIndex && currentIndex < maxIndex) {
+                        return CupertinoActivityIndicator();
+                      } else {
+                        return ListTile(
+                          leading: SelectableText((index + 1).toString()),
+                          title: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              surah['verses'][index]['text'],
+                              textAlign: TextAlign.end,
+                              style: GoogleFonts.notoNaskhArabic(
+                                textStyle: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 35),
+                              ),
+                            ),
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              surah['verses'][index]['translation'],
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            surahAudioPlayer.stop();
+                            Navigator.pushNamed(context,
+                                '/quran?surah=${surah["id"]}&&ayat=${index + 1}');
+                          },
+                        );
+                      }
+                    },
+                    itemCount: currentIndex + 1,
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('কপিরাইট ©'),
+                          TextButton(
+                              onPressed: () {
+                                launchUrl(Uri.parse(
+                                    'https://facebook.com/abduzzami'));
+                              },
+                              child: Text('আব্দুজ জামি',
+                                  textAlign: TextAlign.center))
+                        ],
+                      )),
+                ],
+              ),
+            )),
+      ),
+    );
   }
 }

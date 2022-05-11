@@ -104,196 +104,220 @@ class _AyatState extends State<Ayat> {
     var ayat = Readable.QuranData[widget.surahNumber - 1]['verses']
         [widget.ayatNumber - 1];
     var surah = Readable.QuranData[widget.surahNumber - 1];
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              surah['name'],
-              style: GoogleFonts.notoNaskhArabic(
-                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(8),
-              width: 3,
-              height: 25,
-              color: Theme.of(context).highlightColor,
-            ),
-            Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    surah['transliteration'],
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
+    return WillPopScope(
+      onWillPop: () {
+        Navigator.pushNamed(context, '/quran?surah=${widget.surahNumber}');
+        //we need to return a future
+        return Future.value(false);
+      },
+      child: Title(
+        color: Theme.of(context).primaryColor,
+        title:
+            'Al Quran BD | Surah ${widget.surahNumber} | Ayat ${widget.ayatNumber}',
+        child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(
+                      context, '/quran?surah=${widget.surahNumber}');
+                },
+                icon: Icon(
+                  // Icons.arrow_back_ios_new,
+                  // size: 18,
+                  Icons.arrow_back,
+                )),
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  surah['name'],
+                  style: GoogleFonts.notoNaskhArabic(
+                    textStyle:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                   ),
-                  Text(
-                    'আয়াত ' + ayat['id'].toString(),
-                    style: TextStyle(
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ]),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon:
-                (isPlayingAudio) ? Icon(Icons.pause) : Icon(Icons.play_circle),
-            onPressed: () {
-              _playorPauseAudio();
-            },
-          ),
-          IconButton(
-              onPressed: () {
-                String url =
-                    'https://quran-bd.web.app/quran?surah=${widget.surahNumber}&&ayat=${widget.ayatNumber}';
-                Clipboard.setData(ClipboardData(text: url)).then((_) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text("Email address copied to clipboard")));
-                });
-              },
-              icon: Icon(CupertinoIcons.link_circle_fill)),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SelectableText(
-                surah['name'],
-                textAlign: TextAlign.center,
-                style: GoogleFonts.notoNaskhArabic(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                 ),
-              ),
-              SelectableText(
-                'بسم الله الرحمن الرحيم',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.notoNaskhArabic(
-                  textStyle:
-                      TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                Container(
+                  margin: EdgeInsets.all(8),
+                  width: 3,
+                  height: 25,
+                  color: Theme.of(context).highlightColor,
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SelectableText(
+                      Text(
                         surah['transliteration'],
-                        textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SelectableText(
-                        surah['translation'],
-                        textAlign: TextAlign.center,
+                      Text(
+                        'আয়াত ' + ayat['id'].toString(),
                         style: TextStyle(
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ],
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    width: 2,
-                    height: 40,
-                    color: Theme.of(context).highlightColor,
-                  ),
-                  Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SelectableText(
-                          'আয়াত ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SelectableText(
-                          ayat['id'].toString(),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ]),
-                ],
+                    ]),
+              ],
+            ),
+            actions: [
+              IconButton(
+                icon: (isPlayingAudio)
+                    ? Icon(Icons.pause)
+                    : Icon(Icons.play_circle),
+                onPressed: () {
+                  _playorPauseAudio();
+                },
               ),
-              SizedBox(
-                height: 30,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: SelectableText(
-                    ayat['text'],
-                    textAlign: TextAlign.end,
-                    style: GoogleFonts.notoSansArabic(
-                      textStyle: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 45,
-                      ),
+              IconButton(
+                  onPressed: () {
+                    String url =
+                        'https://quran-bd.web.app/quran?surah=${widget.surahNumber}&&ayat=${widget.ayatNumber}';
+                    Clipboard.setData(ClipboardData(text: url)).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Link copied to clipboard")));
+                    });
+                  },
+                  icon: Icon(CupertinoIcons.link_circle_fill)),
+            ],
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SelectableText(
+                    surah['name'],
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.notoNaskhArabic(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                     ),
                   ),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: SelectableText(
-                    ayat['translation'],
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
+                  SelectableText(
+                    'بسم الله الرحمن الرحيم',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.notoNaskhArabic(
+                      textStyle:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text('কপিরাইট ©'),
-                      TextButton(
-                          onPressed: () {
-                            launchUrl(
-                                Uri.parse('https://facebook.com/abduzzami'));
-                          },
-                          child:
-                              Text('আব্দুজ জামি', textAlign: TextAlign.center))
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SelectableText(
+                            surah['transliteration'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SelectableText(
+                            surah['translation'],
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        width: 2,
+                        height: 40,
+                        color: Theme.of(context).highlightColor,
+                      ),
+                      Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SelectableText(
+                              'আয়াত ',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SelectableText(
+                              ayat['id'].toString(),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
                     ],
-                  )),
-            ]),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: SelectableText(
+                        ayat['text'],
+                        textAlign: TextAlign.end,
+                        style: GoogleFonts.notoSansArabic(
+                          textStyle: TextStyle(
+                            fontWeight: FontWeight.normal,
+                            fontSize: 45,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: SelectableText(
+                        ayat['translation'],
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('কপিরাইট ©'),
+                          TextButton(
+                              onPressed: () {
+                                launchUrl(Uri.parse(
+                                    'https://facebook.com/abduzzami'));
+                              },
+                              child: Text('আব্দুজ জামি',
+                                  textAlign: TextAlign.center))
+                        ],
+                      )),
+                ]),
+          ),
+        ),
       ),
     );
   }
