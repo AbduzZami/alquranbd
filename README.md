@@ -3,7 +3,8 @@
 Al-Quran with Bengali translation.
 
 ## Source used from
-https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran_bn.json
+https://www.npmjs.com/package/quran-json
+https://alquran.cloud/api
 
 ## Live on
 https://quran-bd.web.app/
