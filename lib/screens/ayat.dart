@@ -48,7 +48,7 @@ class _AyatState extends State<Ayat> {
     String surahNumber = widget.surahNumber.toString();
     String ayatNumber = widget.ayatNumber.toString();
     String url =
-        'http://api.alquran.cloud/v1/ayah/$surahNumber:$ayatNumber/ar.alafasy';
+        'https://api.alquran.cloud/v1/ayah/$surahNumber:$ayatNumber/ar.alafasy';
 
     final response = await http.get(Uri.parse(url));
 

@@ -63,7 +63,7 @@ class _SurahState extends State<Surah> {
 
   Future<SurahAudio> fetchAlbum() async {
     String surahNumber = widget.surahNumber.toString();
-    String url = 'http://api.alquran.cloud/v1/surah/$surahNumber/ar.alafasy';
+    String url = 'https://api.alquran.cloud/v1/surah/$surahNumber/ar.alafasy';
 
     final response = await http.get(Uri.parse(url));
 
