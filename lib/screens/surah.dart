@@ -156,11 +156,11 @@ class _SurahState extends State<Surah> {
             children: [
               Text(
                 surah['name'],
-                // style: GoogleFonts.notoNaskhArabic(
-                //   textStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                // ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                ),
+                // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
               ),
               Container(
                 margin: EdgeInsets.all(8),
@@ -219,20 +219,20 @@ class _SurahState extends State<Surah> {
               SelectableText(
                 surah['name'],
                 textAlign: TextAlign.center,
-                // style: GoogleFonts.notoNaskhArabic(
-                //   textStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                // ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 45),
+                ),
+                //style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
               SelectableText(
                 'بسم الله الرحمن الرحيم',
                 textAlign: TextAlign.center,
-                // style: GoogleFonts.notoNaskhArabic(
-                //   textStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                // ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 45),
+                ),
+                // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
               SizedBox(
                 height: 10,
@@ -307,12 +307,12 @@ class _SurahState extends State<Surah> {
                         child: Text(
                           surah['verses'][index]['text'],
                           textAlign: TextAlign.end,
-                          // style: GoogleFonts.notoNaskhArabic(
-                          //   textStyle: TextStyle(
-                          //       fontWeight: FontWeight.normal, fontSize: 35),
-                          // ),
-                          style: TextStyle(
-                              fontWeight: FontWeight.normal, fontSize: 35),
+                          style: GoogleFonts.lateef(
+                            textStyle: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 50),
+                          ),
+                          // style: TextStyle(
+                          //     fontWeight: FontWeight.normal, fontSize: 35),
                         ),
                       ),
                       subtitle: Padding(

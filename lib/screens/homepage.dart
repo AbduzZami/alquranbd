@@ -2,11 +2,11 @@ import 'package:alquranbd/readable.dart';
 import 'package:alquranbd/widgets/homedrawer.dart';
 import 'package:alquranbd/widgets/searchshortcut.dart';
 import 'package:alquranbd/widgets/surahcard.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -55,14 +55,14 @@ class _HomePageState extends State<HomePage> {
                         child: SelectableText(
                             'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ',
                             maxLines: 1,
-                            // style: GoogleFonts.notoNaskhArabic(
-                            //     fontSize: 40,
-                            //     fontWeight: FontWeight.bold,
-                            //     color: Theme.of(context).primaryColorDark)),
-                            style: TextStyle(
-                                fontSize: 40,
+                            style: GoogleFonts.lateef(
+                                fontSize: 100,
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColorDark)),
+                        // style: TextStyle(
+                        //     fontSize: 40,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Theme.of(context).primaryColorDark)),
                       ),
                     ),
                   ),

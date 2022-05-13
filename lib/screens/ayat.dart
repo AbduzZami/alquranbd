@@ -123,10 +123,10 @@ class _AyatState extends State<Ayat> {
           children: [
             Text(
               surah['name'],
-              // style: GoogleFonts.notoNaskhArabic(
-              //   textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              // ),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+              style: GoogleFonts.lateef(
+                textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
+              // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
             ),
             Container(
               margin: EdgeInsets.all(8),
@@ -184,20 +184,20 @@ class _AyatState extends State<Ayat> {
               SelectableText(
                 surah['name'],
                 textAlign: TextAlign.center,
-                // style: GoogleFonts.notoNaskhArabic(
-                //   textStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                // ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 45),
+                ),
+                // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
-              const SelectableText(
+              SelectableText(
                 'بسم الله الرحمن الرحيم',
                 textAlign: TextAlign.center,
-                // style: GoogleFonts.notoNaskhArabic(
-                //   textStyle:
-                //       TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
-                // ),
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
+                style: GoogleFonts.lateef(
+                  textStyle:
+                      TextStyle(fontWeight: FontWeight.bold, fontSize: 45),
+                ),
+                // style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
               ),
               SizedBox(
                 height: 10,
@@ -265,16 +265,16 @@ class _AyatState extends State<Ayat> {
                   child: SelectableText(
                     ayat['text'],
                     textAlign: TextAlign.end,
-                    // style: GoogleFonts.notoNaskhArabic(
-                    //   textStyle: TextStyle(
-                    //     fontWeight: FontWeight.normal,
-                    //     fontSize: 45,
-                    //   ),
-                    // ),
-                    style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 45,
+                    style: GoogleFonts.lateef(
+                      textStyle: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 60,
+                      ),
                     ),
+                    // style: TextStyle(
+                    //   fontWeight: FontWeight.normal,
+                    //   fontSize: 45,
+                    // ),
                   ),
                 ),
               ),
