@@ -46,10 +46,12 @@ class _SurahCardState extends State<SurahCard> {
                   children: [
                     Text(
                       Readable.QuranData[widget.index]['name'],
-                      style: GoogleFonts.notoNaskhArabic(
-                        textStyle: TextStyle(
-                            fontWeight: FontWeight.normal, fontSize: 20),
-                      ),
+                      // style: GoogleFonts.notoNaskhArabic(
+                      //   textStyle: TextStyle(
+                      //       fontWeight: FontWeight.normal, fontSize: 20),
+                      // ),
+                      style: TextStyle(
+                          fontWeight: FontWeight.normal, fontSize: 20),
                     ),
                     SizedBox(height: 10),
                     Text(Readable.QuranData[widget.index]['total_verses']

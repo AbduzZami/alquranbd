@@ -55,7 +55,11 @@ class _HomePageState extends State<HomePage> {
                         child: SelectableText(
                             'لَا إِلَٰهَ إِلَّا ٱللَّٰهُ مُحَمَّدٌ رَسُولُ ٱللَّٰهِ',
                             maxLines: 1,
-                            style: GoogleFonts.notoNaskhArabic(
+                            // style: GoogleFonts.notoNaskhArabic(
+                            //     fontSize: 40,
+                            //     fontWeight: FontWeight.bold,
+                            //     color: Theme.of(context).primaryColorDark)),
+                            style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColorDark)),
